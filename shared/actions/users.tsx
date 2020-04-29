@@ -91,20 +91,14 @@ const submitRevokeVouch = async (_: TypedState, action: UsersGen.SubmitRevokeVou
 }
 
 const wotReact = async (action: UsersGen.WotReactPayload, logger: Saga.SagaLogger) => {
-  const {reaction, voucher} = action.payload
+  const {reaction, sigID, voucher} = action.payload
   if (!action.payload.fromModal) {
     // This needs an error path. Happens when coming from a button directly on the profile screen.
-    await RPCTypes.wotWotReactRpcPromise({reaction, voucher}, Constants.wotReactWaitingKey)
+    await RPCTypes.wotWotReactRpcPromise({reaction, sigID, voucher}, Constants.wotReactWaitingKey)
     return []
   }
   try {
-    await RPCTypes.wotWotReactRpcPromise(
-      {
-        reaction,
-        voucher,
-      },
-      Constants.wotReactWaitingKey
-    )
+    await RPCTypes.wotWotReactRpcPromise({reaction, sigID, voucher}, Constants.wotReactWaitingKey)
   } catch (e) {
     logger.warn('Error from wotReact:', e)
     return ProfileGen.createWotVouchSetError({

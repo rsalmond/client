@@ -240,6 +240,7 @@ export const ReviewWrapper = (
       UsersGen.createWotReact({
         fromModal: true,
         reaction: accept ? RPCTypes.WotReactionType.accept : RPCTypes.WotReactionType.reject,
+        sigID,
         voucher: wotEntry.attestingUser,
       })
     )
